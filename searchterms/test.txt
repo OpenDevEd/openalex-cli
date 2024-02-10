@@ -1,0 +1,11 @@
+#OR
+(
+	climate
+	#AND
+	(
+		#OR
+		change
+		adaptation
+		mitigation
+	)
+)

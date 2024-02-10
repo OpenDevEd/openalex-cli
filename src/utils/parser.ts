@@ -71,42 +71,88 @@ export function searchBuilder_old(query: any) {
 }
 */
 
+/*
+Documentation:
+
+term...
+
+looks for searchterms/term.txt
+
+By default, the terms.txt file is am openalex search string. 
+- The string can be broken down into multiple lines. 
+- The string can be commented shell/python-style with #
+
+The following have special meaning: #- or #OR or #AND.
+- For all of these, the following lines will be enclosed in "..." if there is a space in the line.
+- For #OR and #AND, the following lines will concatenated with " OR " or " AND " respectively.
+- If you use #-, then #OR/#AND is reset, but lines will still be enclosed in "..." if there is a space in the line.
+
+For exmples, see searchterms/ssa.txt and searchterms/test.txt.
+*/
+
 export function searchBuilder(query: any) {
   //let isOr = false;
   //let isLastOr = false;
   let searchQuery = '';
   for (let i = 0; i < query.length; i++) {
-    console.log("->"+query[i]);    
+    //console.log("->"+query[i]);    
     if (query[i].match(/(\w+)\.\.\./)) {
-      console.log("expand: "+query[i]);
+      //console.log("expand: "+query[i]);
       const key = query[i].match(/(\w+)\.\.\./)[1];
       // open a file
       const file = "searchterms/"+ key + '.txt';
-      console.log("f="+file);
+      //console.log("f="+file);
       let result = fs.existsSync(file)? fs.readFileSync(file, 'utf8') : key;
       // split result into an array by new line
       const resultarr = result.split(/\r?\n/);
       result = "";
+      let operator = "";
+      let useoperator = false;
       // remove comments from results file
       for (let j = 0; j < resultarr.length; j++) {
-        const term = resultarr[j].replace(/\#.+$/g,'');
-        term.replace(/\t+/g,' ');
+        //console.log("->"+resultarr[j]);
+        if (resultarr[j].match(/\#(OR|AND)\s*$/)) {
+          operator = " " + resultarr[j].match(/\#(OR|AND)\s*$/)[1] + " ";
+          console.log("operator: "+operator);
+          useoperator = true;
+        };
+        if (resultarr[j].match(/\#(\-)\s*$/)) {
+          useoperator = true;
+          operator = " " ;
+          console.log("operator empty.");
+        };
+        const term = sanitise(resultarr[j].replace(/\#.+$/g,''));      
         if (term != '') {
-          result += term + " ";
+          result += (result.match(/[\w\"\)]\s+$/) && !term.match(/^\s*\)/) ? operator : "") + (useoperator? quoteIfNeeded(term) : term) + " ";
         };
       }
       result = query[i].replace(RegExp(key+"\\.\\.\\."),result);
-      console.log(result);
+      //console.log(result);
       searchQuery += ` ${result}`;
     } else {          
       console.log("add: "+query[i]);
-      searchQuery += ` ${query[i]} `;
+      searchQuery += ` ${quoteIfNeeded(query[i])} `;
     } 
   }
   console.log("final: "+searchQuery);
   return searchQuery;
 }
 
+function sanitise(str: string) {
+  let term = str;
+  term = term.replace(/\t+/sg,' ');
+  term = term.replace(/ +/sg,' ');
+  term = term.replace(/^ +/sg,'');
+  term = term.replace(/ +$/sg,'');
+  return term;
+};
+
+function quoteIfNeeded(term: string) {
+  if (term.match(/ /) && !term.match(/^\".*\"$/)) {
+    term = `"${term}"`;
+  };
+  return term;
+};
 
 export async function searchWork(args: any) {
   //const query = await parseTitle(args.title);
