@@ -1,6 +1,6 @@
+import fs from 'fs';
 import Openalex from 'openalex-sdk';
 import { SearchParameters } from 'openalex-sdk/dist/src/types/work';
-import fs from 'fs';
 
 /*
 export async function parseTitle(title: string[]) {
@@ -94,74 +94,76 @@ export function searchBuilder(query: any) {
   //let isOr = false;
   //let isLastOr = false;
   let searchQuery = '';
+
   for (let i = 0; i < query.length; i++) {
-    //console.log("->"+query[i]);    
+    //console.log("->"+query[i]);
     if (query[i].match(/(\w+)\.\.\./)) {
       //console.log("expand: "+query[i]);
       const key = query[i].match(/(\w+)\.\.\./)[1];
       // open a file
-      const file = "searchterms/"+ key + '.txt';
+      const file = 'searchterms/' + key + '.txt';
       //console.log("f="+file);
-      let result = fs.existsSync(file)? fs.readFileSync(file, 'utf8') : key;
+      let result = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : key;
       // split result into an array by new line
       const resultarr = result.split(/\r?\n/);
-      result = "";
-      let operator = "";
+      result = '';
+      let operator = '';
       let useoperator = false;
       // remove comments from results file
       for (let j = 0; j < resultarr.length; j++) {
         //console.log("->"+resultarr[j]);
         if (resultarr[j].match(/\#(OR|AND)\s*$/)) {
-          operator = " " + resultarr[j].match(/\#(OR|AND)\s*$/)[1] + " ";
-          console.log("operator: "+operator);
+          operator = ' ' + resultarr[j].match(/\#(OR|AND)\s*$/)[1] + ' ';
+          console.log('operator: ' + operator);
           useoperator = true;
-        };
+        }
         if (resultarr[j].match(/\#(\-)\s*$/)) {
           useoperator = true;
-          operator = " " ;
-          console.log("operator empty.");
-        };
-        const term = sanitise(resultarr[j].replace(/\#.+$/g,''));      
+          operator = ' ';
+          console.log('operator empty.');
+        }
+        const term = sanitise(resultarr[j].replace(/\#.+$/g, ''));
         if (term != '') {
-          result += (result.match(/[\w\"\)]\s+$/) && !term.match(/^\s*\)/) ? operator : "") + (useoperator? quoteIfNeeded(term) : term) + " ";
-        };
+          result += (result.match(/[\w\"\)]\s+$/) && !term.match(/^\s*\)/) ? operator : '') + (useoperator ? quoteIfNeeded(term) : term) + ' ';
+        }
       }
-      result = query[i].replace(RegExp(key+"\\.\\.\\."),result);
+      result = query[i].replace(RegExp(key + '\\.\\.\\.'), result);
       //console.log(result);
       searchQuery += ` ${result}`;
-    } else {          
-      console.log("add: "+query[i]);
+    } else {
+      console.log('add: ' + query[i]);
       searchQuery += ` ${quoteIfNeeded(query[i])} `;
-    } 
+    }
   }
-  console.log("final: "+searchQuery);
+  console.log('final: ' + searchQuery);
   return searchQuery;
 }
 
 function sanitise(str: string) {
   let term = str;
-  term = term.replace(/\t+/sg,' ');
-  term = term.replace(/ +/sg,' ');
-  term = term.replace(/^ +/sg,'');
-  term = term.replace(/ +$/sg,'');
+  term = term.replace(/\t+/gs, ' ');
+  term = term.replace(/ +/gs, ' ');
+  term = term.replace(/^ +/gs, '');
+  term = term.replace(/ +$/gs, '');
   return term;
-};
+}
 
 function quoteIfNeeded(term: string) {
   if (term.match(/ /) && !term.match(/^\".*\"$/)) {
     term = `"${term}"`;
-  };
+  }
   return term;
-};
+}
 
 export async function searchWork(args: any) {
   //const query = await parseTitle(args.title);
   const query = args.title;
   const openalex = new Openalex();
+  if (args.searchstring) args.searchstring = fs.readFileSync(args.searchstring, 'utf8');
   if (args.count) {
     const result = await openalex.works({
       searchField: 'title',
-      search: searchBuilder(query),
+      search: args.searchstring || searchBuilder(query),
       perPage: 1,
       page: 1,
     });
@@ -170,7 +172,7 @@ export async function searchWork(args: any) {
   }
   const openalexOptions: SearchParameters = {
     searchField: 'title',
-    search: searchBuilder(query),
+    search: args.searchstring || searchBuilder(query),
   };
   if (args.page) openalexOptions['page'] = args.page;
   if (args.perPage) openalexOptions['perPage'] = args.perPage;
@@ -182,9 +184,9 @@ export async function searchWork(args: any) {
   if (args.save) console.log('Results saved to', args.save);
   if (args.showtitle) {
     console.log(`Results: ${result.meta.count}`);
-    if (args.startPage>1) console.log('...');
+    if (args.startPage > 1) console.log('...');
     result.results.forEach((work: any) => {
-      console.log("- "+work.title);
+      console.log('- ' + work.title);
     });
     if (result.results.length < result.meta.count) console.log('... and more');
   }

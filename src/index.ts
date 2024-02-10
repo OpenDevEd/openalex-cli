@@ -37,11 +37,14 @@ yargs(hideBin(process.argv))
         describe: 'Save the search results to a json file EG: --save=test will save it to test.json',
         type: 'string',
       })
-      .demandOption(['title'], 'Please provide a title');
+      .option('searchstring', {
+        describe: 'Search string from tx',
+        type: 'string',
+      });
   })
   .middleware((argv: any) => {
-    if (!argv.title) {
-      console.log('Please provide a title');
+    if (!argv.title && !argv.searchstring) {
+      console.log('Please provide a title or a search string.');
       process.exit(1);
     }
     searchWork(argv);
