@@ -1,12 +1,13 @@
-import OpenAlex from 'openalex-sdk';
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
+import { parseTitle } from './utils/parser';
 
-const openAlex = new OpenAlex();
-
-(async () => {
-  const result = await openAlex.works({
-    search: 'openalex',
-    page: 1,
-    perPage: 1,
-  });
-  console.log(result.meta);
-})();
+yargs(hideBin(process.argv))
+  .command('search', 'perform a search', (yargs: any) => {
+    yargs.option('title', {
+      describe: 'Title of the paper',
+      type: 'array',
+      coerce: parseTitle,
+    });
+  })
+  .parse();
