@@ -29,6 +29,10 @@ yargs(hideBin(process.argv))
         describe: 'End page number',
         type: 'number',
       })
+      .option('allpages', {
+        describe: 'Retrieve all pages',
+        type: 'boolean',
+      })
       .option('save', {
         describe: 'Save the search results to a json file EG: --save=test will save it to test.json',
         type: 'string',

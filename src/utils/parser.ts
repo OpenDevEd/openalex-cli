@@ -22,7 +22,7 @@ export async function parseTitle(title: string[]) {
 }
 
 // extract key from json file
-export function extractKey(key: string, path: string = '../../config.json') {
+export function extractKey(key: string, path: string = '../../searchterms.json') {
   const keys = require(path);
   // remove dot from the end of the key
   if (key.split('.').length > 1) {
@@ -68,6 +68,7 @@ export async function searchWork(args: any) {
   };
   if (args.page) openalexOptions['page'] = args.page;
   if (args.perPage) openalexOptions['perPage'] = args.perPage;
+  if (args.allpages) openalexOptions['retriveAllPages'] = args.allpages;
   if (args.startPage) openalexOptions['startPage'] = args.startPage;
   if (args.endPage) openalexOptions['endPage'] = args.endPage;
   if (args.save) openalexOptions['fileName'] = args.save;
