@@ -1,6 +1,8 @@
 import Openalex from 'openalex-sdk';
 import { SearchParameters } from 'openalex-sdk/dist/src/types/work';
+import fs from 'fs';
 
+/*
 export async function parseTitle(title: string[]) {
   // Transform the array into an object
   const query = title.reduce((acc: any, term: string, index: number) => {
@@ -21,6 +23,7 @@ export async function parseTitle(title: string[]) {
   return query;
 }
 
+
 // extract key from json file
 export function extractKey(key: string, path: string = '../../searchterms.json') {
   const keys = require(path);
@@ -33,17 +36,18 @@ export function extractKey(key: string, path: string = '../../searchterms.json')
 }
 
 // search builder
-export function searchBuilder(query: any) {
-  let isOr = false;
-  let isLastOr = false;
+export function searchBuilder_old(query: any) {
+  //let isOr = false;
+  //let isLastOr = false;
   const keys = Object.keys(query);
   let searchQuery = '';
   for (let i = 0; i < keys.length; i++) {
+    console.log("->"+query[keys[i]]);
     // check if the next element is an operator 'OR'
     if (keys[i + 1] && query[keys[i + 1]] === 'OR') {
       isOr = true;
       searchQuery += `(`;
-    }
+    } 
     if (keys[i].includes('key')) {
       searchQuery += extractKey(query[keys[i]]);
     } else if (keys[i].includes('term')) {
@@ -53,7 +57,7 @@ export function searchBuilder(query: any) {
       else if (query[keys[i]] === 'OR') {
         // searchQuery = `(${searchQuery})`;
         searchQuery += ` ${query[keys[i]]} `;
-        isLastOr = true;
+        //isLastOr = true;
       }
     }
     if (isOr && query[keys[i]] !== 'OR' && isLastOr) {
@@ -65,9 +69,47 @@ export function searchBuilder(query: any) {
   console.log(searchQuery);
   return searchQuery;
 }
+*/
+
+export function searchBuilder(query: any) {
+  //let isOr = false;
+  //let isLastOr = false;
+  let searchQuery = '';
+  for (let i = 0; i < query.length; i++) {
+    console.log("->"+query[i]);    
+    if (query[i].match(/(\w+)\.\.\./)) {
+      console.log("expand: "+query[i]);
+      const key = query[i].match(/(\w+)\.\.\./)[1];
+      // open a file
+      const file = "searchterms/"+ key + '.txt';
+      console.log("f="+file);
+      let result = fs.existsSync(file)? fs.readFileSync(file, 'utf8') : key;
+      // split result into an array by new line
+      const resultarr = result.split(/\r?\n/);
+      result = "";
+      // remove comments from results file
+      for (let j = 0; j < resultarr.length; j++) {
+        const term = resultarr[j].replace(/\#.+$/g,'');
+        if (term != '') {
+          result += term + " ";
+        };
+      }
+      result = query[i].replace(RegExp(key+"\\.\\.\\."),result);
+      console.log(result);
+      searchQuery += ` ${result}`;
+    } else {          
+      console.log("add: "+query[i]);
+      searchQuery += ` ${query[i]} `;
+    } 
+  }
+  console.log("final: "+searchQuery);
+  return searchQuery;
+}
+
 
 export async function searchWork(args: any) {
-  const query = await parseTitle(args.title);
+  //const query = await parseTitle(args.title);
+  const query = args.title;
   const openalex = new Openalex();
   if (args.count) {
     const result = await openalex.works({

@@ -1,0 +1,1 @@
+(climate AND (change OR resilience OR changing OR adaptation OR adapt OR adapting OR mitigate OR mitigation))
