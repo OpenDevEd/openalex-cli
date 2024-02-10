@@ -157,13 +157,16 @@ function quoteIfNeeded(term: string) {
 
 export async function searchWork(args: any) {
   //const query = await parseTitle(args.title);
-  const query = args.title;
+  let query = args.title;
   const openalex = new Openalex();
-  if (args.searchstring) args.searchstring = fs.readFileSync(args.searchstring, 'utf8');
+  if (args.searchstring) {
+    query = fs.readFileSync(args.searchstring, 'utf8');
+    query = query.split(/\r?\n/);
+  }
   if (args.count) {
     const result = await openalex.works({
       searchField: 'title',
-      search: args.searchstring || searchBuilder(query),
+      search: searchBuilder(query),
       perPage: 1,
       page: 1,
     });
@@ -172,7 +175,7 @@ export async function searchWork(args: any) {
   }
   const openalexOptions: SearchParameters = {
     searchField: 'title',
-    search: args.searchstring || searchBuilder(query),
+    search: searchBuilder(query),
   };
   if (args.page) openalexOptions['page'] = args.page;
   if (args.perPage) openalexOptions['perPage'] = args.perPage;
