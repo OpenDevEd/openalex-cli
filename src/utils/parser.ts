@@ -34,18 +34,35 @@ export function extractKey(key: string, path: string = '../../searchterms.json')
 
 // search builder
 export function searchBuilder(query: any) {
+  let isOr = false;
+  let isLastOr = false;
   const keys = Object.keys(query);
   let searchQuery = '';
   for (let i = 0; i < keys.length; i++) {
+    // check if the next element is an operator 'OR'
+    if (keys[i + 1] && query[keys[i + 1]] === 'OR') {
+      isOr = true;
+      searchQuery += `(`;
+    }
     if (keys[i].includes('key')) {
       searchQuery += extractKey(query[keys[i]]);
     } else if (keys[i].includes('term')) {
       searchQuery += ` ${query[keys[i]]} `;
     } else if (keys[i].includes('operator')) {
-      searchQuery += ` ${query[keys[i]]} `;
+      if (query[keys[i]] === 'AND') searchQuery += ' AND ';
+      else if (query[keys[i]] === 'OR') {
+        // searchQuery = `(${searchQuery})`;
+        searchQuery += ` ${query[keys[i]]} `;
+        isLastOr = true;
+      }
+    }
+    if (isOr && query[keys[i]] !== 'OR' && isLastOr) {
+      searchQuery += `)`;
+      isOr = false;
+      isLastOr = false;
     }
   }
-  // console.log(searchQuery);
+  console.log(searchQuery);
   return searchQuery;
 }
 
