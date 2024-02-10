@@ -1,4 +1,5 @@
 import Openalex from 'openalex-sdk';
+import { SearchParameters } from 'openalex-sdk/dist/src/types/work';
 
 export async function parseTitle(title: string[]) {
   // Transform the array into an object
@@ -17,14 +18,7 @@ export async function parseTitle(title: string[]) {
     return acc;
   }, {});
 
-  const openalex = new Openalex();
-  const result = await openalex.works({
-    searchField: 'title',
-    search: searchBuilder(query),
-  });
-  console.log(result.meta);
-
-  return result;
+  return query;
 }
 
 // extract key from json file
@@ -51,6 +45,35 @@ export function searchBuilder(query: any) {
       searchQuery += ` ${query[keys[i]]} `;
     }
   }
-  console.log(searchQuery);
+  // console.log(searchQuery);
   return searchQuery;
+}
+
+export async function searchWork(args: any) {
+  const query = await parseTitle(args.title);
+  const openalex = new Openalex();
+  if (args.count) {
+    const result = await openalex.works({
+      searchField: 'title',
+      search: searchBuilder(query),
+      perPage: 1,
+      page: 1,
+    });
+    console.log('count:', result.meta.count);
+    return result.meta.count;
+  }
+  const openalexOptions: SearchParameters = {
+    searchField: 'title',
+    search: searchBuilder(query),
+  };
+  if (args.page) openalexOptions['page'] = args.page;
+  if (args.perPage) openalexOptions['perPage'] = args.perPage;
+  if (args.startPage) openalexOptions['startPage'] = args.startPage;
+  if (args.endPage) openalexOptions['endPage'] = args.endPage;
+  if (args.save) openalexOptions['fileName'] = args.save;
+  const result = await openalex.works(openalexOptions);
+  if (args.save) console.log('Results saved to', args.save);
+  else console.log(result);
+
+  return result;
 }
