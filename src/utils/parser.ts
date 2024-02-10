@@ -90,6 +90,7 @@ export function searchBuilder(query: any) {
       // remove comments from results file
       for (let j = 0; j < resultarr.length; j++) {
         const term = resultarr[j].replace(/\#.+$/g,'');
+        term.replace(/\t+/g,' ');
         if (term != '') {
           result += term + " ";
         };
@@ -133,7 +134,15 @@ export async function searchWork(args: any) {
   if (args.save) openalexOptions['fileName'] = args.save;
   const result = await openalex.works(openalexOptions);
   if (args.save) console.log('Results saved to', args.save);
-  else console.log(result);
+  if (args.showtitle) {
+    console.log(`Results: ${result.meta.count}`);
+    if (args.startPage>1) console.log('...');
+    result.results.forEach((work: any) => {
+      console.log("- "+work.title);
+    });
+    if (result.results.length < result.meta.count) console.log('... and more');
+  }
+  if (!args.save && !args.showtitle) console.log(result);
 
   return result;
 }
