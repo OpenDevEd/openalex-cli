@@ -160,6 +160,10 @@ export async function searchWork(args: any) {
   let query = args.title;
   const openalex = new Openalex();
   if (args.searchstring) {
+    if (!fs.existsSync(args.searchstring)) {
+      console.log('File not found: ' + args.searchstring);
+      process.exit(1);
+    }
     query = fs.readFileSync(args.searchstring, 'utf8');
     query = query.split(/\r?\n/);
   }
