@@ -25,3 +25,8 @@ Or, for key-value pairs, you can use `correspondence.jq` as follows:
 jq  -f correspondence.jq collection.json
 ```
 
+Extract references:
+```
+jq -f extract_references_from_openalex.jq openalex-output.json > references.json
+```
+Some perl code is available that attaches the references to the zotero items.
