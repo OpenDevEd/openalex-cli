@@ -2,10 +2,9 @@ The `jq` filter `openalex-to-zotero.jq` implements very basic translation of ope
 
 Get results from openalex
 ```
- npm run start -- search your search terms --save=openalex-output
+npm run start -- search --title climate... AND africa... AND education... --allpages --save=openalex-output
 ```
 Then transform:
-
 ```
 jq -f openalex-to-zotero.jq openalex-output.json > zotero.json
 ```
