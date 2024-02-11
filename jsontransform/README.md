@@ -20,3 +20,8 @@ Then use `jq` to give the association:
 ```
 jq  '[.[] | {key: .data.key, callNumber: .data.callNumber}]' collection.json 
 ```
+Or, for key-value pairs, you can use `correspondence.jq` as follows:
+```
+jq  -f correspondence.jq collection.json
+```
+
