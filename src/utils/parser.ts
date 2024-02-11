@@ -157,14 +157,15 @@ function quoteIfNeeded(term: string) {
 
 export async function searchWork(args: any) {
   //const query = await parseTitle(args.title);
-  let query = args.title;
+  let query = args.searchstring;
+  console.log(query);
   const openalex = new Openalex();
-  if (args.searchstring) {
-    if (!fs.existsSync(args.searchstring)) {
-      console.log('File not found: ' + args.searchstring);
+  if (args.searchstringfromfile) {
+    if (!fs.existsSync(args.searchstringfromfile)) {
+      console.log('File not found: ' + args.searchstringfromfile);
       process.exit(1);
     }
-    query = fs.readFileSync(args.searchstring, 'utf8');
+    query = fs.readFileSync(args.searchstringfromfile, 'utf8');
     query = query.split(/\r?\n/);
   }
   if (args.count) {

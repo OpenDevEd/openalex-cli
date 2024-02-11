@@ -3,11 +3,11 @@ const { hideBin } = require('yargs/helpers');
 import { searchWork } from './utils/parser';
 
 yargs(hideBin(process.argv))
-  .command('search', 'perform a search', (yargs: any) => {
+  .command('search [searchstring...]', 'Perform a search. The search string should be in OpenAlex format, e.g. climate AND change AND Tanzania.', (yargs: any) => {
     yargs
       .option('title', {
         describe: 'Search only in title',
-        type: 'array',
+        type: 'boolean',
       })
       .option('count', {
         describe: 'Count of the search results',
@@ -41,15 +41,16 @@ yargs(hideBin(process.argv))
         describe: 'Save the search results to a json file. E.g. --save=test will save results to test.json',
         type: 'string',
       })
-      .option('searchstring', {
-        describe: 'Search string from tx',
-        type: 'array',
+      .option('searchstringfromfile', {
+        describe: 'Search string read from file.',
+        type: 'string',
       });
   })
   .middleware((argv: any) => {
-    if (!argv.title && !argv.searchstring) {
-      console.log('Please provide a title or a search string.');
-      process.exit(1);
+    console.log(JSON.stringify(argv));
+    if (!argv.searchstring && !argv.searchstringfromfile) {
+      console.log('Please provide a search string (positional args) or use --searchstringfromfile=file.txt.');
+      process.exit(1);      
     }
     searchWork(argv);
   })
