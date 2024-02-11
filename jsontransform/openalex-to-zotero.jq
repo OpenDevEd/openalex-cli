@@ -1,12 +1,14 @@
 # Map types from openalex to zotero
 def typeMap: if . == "article" then "journalArticle" else "report" end;
+#
+def openalexCode: ("openalex:"+(. | split("/")[-1]));
 # Determine whether the doi should be put into the Zotero extra field
 def showDOIInExtra: if (.type != "article" and .doi != "") then ("DOI: " + .doi + "\n") else "" end;
 # Turn abstract_inverted_index into abstract:
 def absInvert: [[ . | to_entries | .[] | { key: .key, value: .value | .[] } ] | sort_by(.value) | .[] | .key] | join(" ");
 
 .results | [ .[] | (
-# handle common fields:
+# handle fields common to all zotero record types (journalArticle, report, book ...)
 {
   "itemType": (.type | typeMap),
   "title": .title,
@@ -28,15 +30,16 @@ def absInvert: [[ . | to_entries | .[] | { key: .key, value: .value | .[] } ] | 
   "archiveLocation": "",
   "libraryCatalog": "",
   # "callNumber": (. | tostring),
-  "callNumber": ("openalex:"+(.ids.openalex | split("/")[-1])),
+  "callNumber": (.ids.openalex | openalexCode),
   "rights": "",
-  "extra": (({doi: .doi, type: .type} | showDOIInExtra)+"openalex:"+(.ids.openalex//"")+"\nmag:"+(.ids.mag//"")+"\n"),
+  "extra": (({doi: .doi, type: .type} | showDOIInExtra)+(.ids.openalex|openalexCode)+"\nmag:"+(.ids.mag//"")+"\n"),
   "tags": [],
   "collections": [],
   "relations": {}
 } 
-# handle type-specific fields:
-+ (if .type == "article" then {
+# Zotero has fields that are only valid for certain types. Handle those specific fields.
+# Extra fields for Zotero-type journalArticle
++ (if (.type | typeMap) == "article" then {
   "publicationTitle": (.primary_location.source.display_name // ""),
   "seriesText": "",
   "volume": (.biblio.volume // ""),
@@ -48,6 +51,7 @@ def absInvert: [[ . | to_entries | .[] | { key: .key, value: .value | .[] } ] | 
   "DOI": (.doi // ""),
   "ISSN": (.primary_location.source.issn_l // "")
 } else 
+# Extra fields for Zotero-type report:
 {
   "reportNumber": "",
   "reportType": "",
