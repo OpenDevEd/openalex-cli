@@ -42,7 +42,7 @@ export function searchBuilder_old(query: any) {
   const keys = Object.keys(query);
   let searchQuery = '';
   for (let i = 0; i < keys.length; i++) {
-    console.log("->"+query[keys[i]]);
+    console.log("->"+query[keys[i]]);'search [searchstring...]',
     // check if the next element is an operator 'OR'
     if (keys[i + 1] && query[keys[i + 1]] === 'OR') {
       isOr = true;
@@ -94,7 +94,7 @@ export function searchBuilder(query: any) {
   //let isOr = false;
   //let isLastOr = false;
   let searchQuery = '';
-  query = query.split(' ');
+  // query = query.split(' ');
 
   for (let i = 0; i < query.length; i++) {
     //console.log("->"+query[i]);

@@ -52,10 +52,12 @@ yargs(hideBin(process.argv))
           describe: 'Search string read from file.',
           type: 'string',
         })
+        /*
         .option('searchstring', {
           describe: 'Search string.',
           type: 'string',
-        });
+        })*/
+        ;
     },
   )
   .middleware((argv: any) => {
