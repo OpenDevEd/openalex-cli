@@ -6,11 +6,15 @@ yargs(hideBin(process.argv))
   .command('search', 'perform a search', (yargs: any) => {
     yargs
       .option('title', {
-        describe: 'Title of the paper',
+        describe: 'Search only in title',
         type: 'array',
       })
       .option('count', {
         describe: 'Count of the search results',
+        type: 'boolean',
+      })
+      .option('showtitle', {
+        describe: 'Only show result titles. Can be used in conjunction with --save.',
         type: 'boolean',
       })
       .option('page', {
@@ -34,12 +38,12 @@ yargs(hideBin(process.argv))
         type: 'boolean',
       })
       .option('save', {
-        describe: 'Save the search results to a json file EG: --save=test will save it to test.json',
+        describe: 'Save the search results to a json file. E.g. --save=test will save results to test.json',
         type: 'string',
       })
       .option('searchstring', {
         describe: 'Search string from tx',
-        type: 'string',
+        type: 'array',
       });
   })
   .middleware((argv: any) => {
