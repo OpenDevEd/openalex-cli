@@ -94,6 +94,7 @@ export function searchBuilder(query: any) {
   //let isOr = false;
   //let isLastOr = false;
   let searchQuery = '';
+  query = query.split(' ');
 
   for (let i = 0; i < query.length; i++) {
     //console.log("->"+query[i]);
@@ -131,11 +132,11 @@ export function searchBuilder(query: any) {
       //console.log(result);
       searchQuery += ` ${result}`;
     } else {
-      console.log('add: ' + query[i]);
+      // console.log('add: ' + query[i]);
       searchQuery += ` ${quoteIfNeeded(query[i])} `;
     }
   }
-  console.log('final: ' + searchQuery);
+  // console.log('final: ' + searchQuery);
   return searchQuery;
 }
 
@@ -158,7 +159,7 @@ function quoteIfNeeded(term: string) {
 export async function searchWork(args: any) {
   //const query = await parseTitle(args.title);
   let query = args.searchstring;
-  console.log(query);
+  const searchField = args.title_and_abstracte ? 'title_and_abstract' : 'title';
   const openalex = new Openalex();
   if (args.searchstringfromfile) {
     if (!fs.existsSync(args.searchstringfromfile)) {
@@ -170,7 +171,7 @@ export async function searchWork(args: any) {
   }
   if (args.count) {
     const result = await openalex.works({
-      searchField: 'title',
+      searchField: searchField,
       search: searchBuilder(query),
       perPage: 1,
       page: 1,
@@ -179,7 +180,7 @@ export async function searchWork(args: any) {
     return result.meta.count;
   }
   const openalexOptions: SearchParameters = {
-    searchField: 'title',
+    searchField: searchField,
     search: searchBuilder(query),
   };
   if (args.page) openalexOptions['page'] = args.page;
@@ -198,7 +199,7 @@ export async function searchWork(args: any) {
     });
     if (result.results.length < result.meta.count) console.log('... and more');
   }
-  if (!args.save && !args.showtitle) console.log(result);
+  if (!args.save && !args.showtitle) console.log(JSON.stringify(result, null, 2));
 
   return result;
 }
