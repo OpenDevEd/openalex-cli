@@ -131,11 +131,11 @@ export function searchBuilder(query: any) {
       //console.log(result);
       searchQuery += ` ${result}`;
     } else {
-      console.log('add: ' + query[i]);
+      // console.log('add: ' + query[i]);
       searchQuery += ` ${quoteIfNeeded(query[i])} `;
     }
   }
-  console.log('final: ' + searchQuery);
+  // console.log('final: ' + searchQuery);
   return searchQuery;
 }
 
@@ -197,7 +197,7 @@ export async function searchWork(args: any) {
     });
     if (result.results.length < result.meta.count) console.log('... and more');
   }
-  if (!args.save && !args.showtitle) console.log(result);
+  if (!args.save && !args.showtitle) console.log(JSON.stringify(result, null, 2));
 
   return result;
 }
