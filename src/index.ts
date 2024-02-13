@@ -61,12 +61,12 @@ yargs(hideBin(process.argv))
     },
   )
   .middleware((argv: any) => {
-    if (!argv.title && !argv.title_and_abstracte) {
-      console.log('Please provide a search field --title or --title_and_abstracte.');
+    if (!argv.title && !argv.title_and_abstract) {
+      console.log('Please provide a search field --title or --title_and_abstract.');
       process.exit(1);
     }
-    if (argv.title && argv.title_and_abstracte) {
-      console.log('Please provide only one search field --title or --title_and_abstracte.');
+    if (argv.title && argv.title_and_abstract) {
+      console.log('Please provide only one search field --title or --title_and_abstract.');
       process.exit(1);
     }
     if (!argv.searchstring && !argv.searchstringfromfile) {
