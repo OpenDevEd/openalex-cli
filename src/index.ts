@@ -12,7 +12,7 @@ yargs(hideBin(process.argv))
           describe: 'Search only in title',
           type: 'boolean',
         })
-        .option('title_and_abstracte', {
+        .option('title_and_abstract', {
           describe: 'Search only in title and abstract',
           type: 'boolean',
         })
