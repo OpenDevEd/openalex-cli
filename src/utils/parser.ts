@@ -136,7 +136,7 @@ export function searchBuilder(query: any) {
       searchQuery += ` ${quoteIfNeeded(query[i])} `;
     }
   }
-  // console.log('final: ' + searchQuery);
+  console.log('Final query: ' + searchQuery);
   return searchQuery;
 }
 
