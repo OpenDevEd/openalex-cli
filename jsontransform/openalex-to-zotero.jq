@@ -39,7 +39,7 @@ def absInvert: [[ . | to_entries | .[] | { key: .key, value: .value | .[] } ] | 
 } 
 # Zotero has fields that are only valid for certain types. Handle those specific fields.
 # Extra fields for Zotero-type journalArticle
-+ (if (.type | typeMap) == "article" then {
++ (if (.type | typeMap) == "journalArticle" then {
   "publicationTitle": (.primary_location.source.display_name // ""),
   "seriesText": "",
   "volume": (.biblio.volume // ""),
