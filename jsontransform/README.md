@@ -24,9 +24,10 @@ Or, for key-value pairs, you can use `correspondence.jq` as follows:
 ```
 jq  -f correspondence.jq collection.json > correspondence.json
 ```
+Now that you have the correspondence between Zotero item keys and openalex ids, you can, e.g., attach the original openalex json to the Zotero item.
 
-Extract references:
+Another example is to transfer the openalex citation tree to Zotero.
 ```
 jq -f extract_references_from_openalex.jq openalex-output.json > references.json
 ```
-Some perl code is available that attaches the references to the zotero items.
+Some perl code is available that attaches the references to the zotero items. The code reads correspondence.json and references.json. It then attached a note to each newly created Zotero item,that lists the references in kerko style. *Obviously, this code only operates within the data set retrieved - i.e., reference links are only set up between items that were retrieved in the same query.)
