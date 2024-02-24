@@ -12,7 +12,7 @@ Then, if you install https://github.com/OpenDevEd/zotero-lib,
 ```
 zotero-lib --group-id <your_zotero_group> create --files zotero.json
 ```
-In case you need to process items further (e.g., attach the original json from openalex), you'll need to be able to associate the newly created Zotero items with the openalex item. You could use the `--out` switch to `zotero-lib` and analyse that fie, but especially for larger uploads, that's super straight forward. Instead, place the uploaded items into a collection in Zotero and fetch the items in the collection:
+In case you need to process items further (e.g., attach the original json from openalex), you'll need to be able to associate the newly created Zotero items with the openalex item. You could use the `--out` switch to `zotero-lib` and analyse that fie, but especially for larger uploads, that's not super straight forward. Instead, place the uploaded items into a collection in Zotero and fetch the items in the collection:
 ```
 zotero-lib --out collection.json items --collection zotero://select/groups/<group>/collections/<key>
 ```
