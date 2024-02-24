@@ -12,11 +12,11 @@ Then, if you install https://github.com/OpenDevEd/zotero-lib,
 ```
 zotero-lib --group-id <your_zotero_group> create --files zotero.json
 ```
-In case you need to process items further (e.g., attach the original json from openalex), you'll need to be able to associate the newly created Zotero items with the openalex item. You could use the `--out` switch to `zotero-lib` and analyse that fie, but especially for larger uploads, that's not super straight forward. Instead, place the uploaded items into a collection in Zotero and fetch the items in the collection:
+In case you need to process items further (e.g., attach the original json from openalex), you'll need to be able to associate the newly created Zotero items with the openalex item; in other words, associated the item keys of the newly created Zotero items with the openalex ids. You could use the `--out` switch to `zotero-lib` and analyse that fie, but especially for larger uploads, that's not super straight forward. Instead, place the uploaded items into a collection in Zotero and fetch the items in the collection:
 ```
 zotero-lib --out collection.json items --collection zotero://select/groups/<group>/collections/<key>
 ```
-Then use `jq` to give the association:
+The openalex key is stored in callNumber. Therefore, use `jq` like this to give the association between zotero item key and openalex id:
 ```
 jq  '[.[] | {key: .data.key, callNumber: .data.callNumber}]' collection.json 
 ```
