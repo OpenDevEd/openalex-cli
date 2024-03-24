@@ -6,7 +6,7 @@ import { searchWork } from './utils/parser';
 yargs(hideBin(process.argv))
   .command(
     'search [searchstring...]',
-    'Perform a search. The search string should be in OpenAlex format, e.g. climate AND change AND Tanzania.',
+    'Perform a search. The search string should be in OpenAlex format, e.g. climate AND change AND Tanzania. You can use [ and ] instead of ( and ).',
     (yargs: any) => {
       yargs
         .option('title', {
