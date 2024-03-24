@@ -22,7 +22,7 @@
   "homepage": "https://github.com/OpenDevEd/openalex-cli#readme",
   "dependencies": {
     "commander": "^12.0.0",
-    "openalex-sdk": "^1.0.5",
+    "openalex-sdk": "^1.1.2",
     "typescript": "^5.3.3",
     "yargs": "^17.7.2"
   },

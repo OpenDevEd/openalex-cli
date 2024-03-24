@@ -157,7 +157,6 @@ function quoteIfNeeded(term: string) {
 }
 
 export async function searchWork(args: any) {
-  //const query = await parseTitle(args.title);
   let query = args.searchstring;
   const searchField = args.title_and_abstracte ? 'title_and_abstract' : 'title';
   const openalex = new Openalex();
@@ -188,7 +187,7 @@ export async function searchWork(args: any) {
   if (args.allpages) openalexOptions['retriveAllPages'] = args.allpages;
   if (args.startPage) openalexOptions['startPage'] = args.startPage;
   if (args.endPage) openalexOptions['endPage'] = args.endPage;
-  if (args.save) openalexOptions['fileName'] = args.save;
+  if (args.save) openalexOptions['toJson'] = args.save;
   const result = await openalex.works(openalexOptions);
   if (args.save) console.log('Results saved to', args.save);
   if (args.showtitle) {

@@ -16,17 +16,16 @@ npm run start -- search --title  climate AND africa AND education --count
 
 Search openalex and save output:
 ```
-npm run start -- search --title  climate AND africa AND education --save=output
+npm run start -- search --title  climate AND africa AND education --save output
 ```
 
 
 Search openalex, show titles, and save output:
 ```
-npm run start -- search --title  climate AND africa AND education --showtitle --save=output
+npm run start -- search --title  climate AND africa AND education --showtitle --save output
 ```
 
 Expand search terms according to searches stored in text files in `searchterms/`:
 ```
 npm run start -- search --title  climate... AND africa... AND education... --showtitle
 ```
-
