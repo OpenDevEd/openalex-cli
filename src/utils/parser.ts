@@ -42,7 +42,7 @@ export function searchBuilder_old(query: any) {
   const keys = Object.keys(query);
   let searchQuery = '';
   for (let i = 0; i < keys.length; i++) {
-    console.log("->"+query[keys[i]]);
+    console.log("->"+query[keys[i]]);'search [searchstring...]',
     // check if the next element is an operator 'OR'
     if (keys[i + 1] && query[keys[i + 1]] === 'OR') {
       isOr = true;
@@ -94,6 +94,7 @@ export function searchBuilder(query: any) {
   //let isOr = false;
   //let isLastOr = false;
   let searchQuery = '';
+  // query = query.split(' ');
 
   for (let i = 0; i < query.length; i++) {
     //console.log("->"+query[i]);
@@ -135,7 +136,7 @@ export function searchBuilder(query: any) {
       searchQuery += ` ${quoteIfNeeded(query[i])} `;
     }
   }
-  // console.log('final: ' + searchQuery);
+  console.log('Final query: ' + searchQuery);
   return searchQuery;
 }
 
@@ -157,19 +158,20 @@ function quoteIfNeeded(term: string) {
 
 export async function searchWork(args: any) {
   //const query = await parseTitle(args.title);
-  let query = args.title;
+  let query = args.searchstring;
+  const searchField = args.title_and_abstracte ? 'title_and_abstract' : 'title';
   const openalex = new Openalex();
-  if (args.searchstring) {
-    if (!fs.existsSync(args.searchstring)) {
-      console.log('File not found: ' + args.searchstring);
+  if (args.searchstringfromfile) {
+    if (!fs.existsSync(args.searchstringfromfile)) {
+      console.log('File not found: ' + args.searchstringfromfile);
       process.exit(1);
     }
-    query = fs.readFileSync(args.searchstring, 'utf8');
+    query = fs.readFileSync(args.searchstringfromfile, 'utf8');
     query = query.split(/\r?\n/);
   }
   if (args.count) {
     const result = await openalex.works({
-      searchField: 'title',
+      searchField: searchField,
       search: searchBuilder(query),
       perPage: 1,
       page: 1,
@@ -178,7 +180,7 @@ export async function searchWork(args: any) {
     return result.meta.count;
   }
   const openalexOptions: SearchParameters = {
-    searchField: 'title',
+    searchField: searchField,
     search: searchBuilder(query),
   };
   if (args.page) openalexOptions['page'] = args.page;
