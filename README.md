@@ -3,6 +3,7 @@
 git clone git@github.com:OpenDevEd/openalex-cli.git
 cd openalex-cli
 npm install
+npm run build
 npm link
 openalex-cli --help
 ```
