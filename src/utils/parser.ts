@@ -191,6 +191,8 @@ export async function searchWork(args: any) {
   if (args.startPage) openalexOptions['startPage'] = args.startPage;
   if (args.endPage) openalexOptions['endPage'] = args.endPage;
   if (args.save) openalexOptions['toJson'] = args.save;
+  // if (args.saveoptions) // TODO
+  fs.writeFileSync("openalexOptions.json", JSON.stringify(openalexOptions, null, 2));
   const result = await openalex.works(openalexOptions);
   if (args.save) console.log('Results saved to', args.save);
   if (args.showtitle) {
