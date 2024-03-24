@@ -7,6 +7,13 @@ npm run build
 npm link
 openalex-cli --help
 ```
+Alternatively, you can use:
+```
+git clone git@github.com:OpenDevEd/openalex-cli.git
+cd openalex-cli
+npm run setup
+```
+
 If you do not use `npm link`, you need to use `npm run start --` instead of `openalex-cli` below.
 
 # Usage

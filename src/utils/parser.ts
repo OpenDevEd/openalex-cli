@@ -136,6 +136,9 @@ export function searchBuilder(query: any) {
       searchQuery += ` ${quoteIfNeeded(query[i])} `;
     }
   }
+  // Allow use of [ and ] instead of ( and ).
+  searchQuery = searchQuery.replace(/\[/gs, '(');
+  searchQuery = searchQuery.replace(/\]/gs, ')');
   console.log('Final query: ' + searchQuery);
   return searchQuery;
 }
