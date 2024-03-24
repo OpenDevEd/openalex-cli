@@ -159,10 +159,17 @@ function quoteIfNeeded(term: string) {
   return term;
 }
 
+async function saveAndSearch(openalexOptions: SearchParameters) {
+  // if (args.saveoptions) // TODO
+  fs.writeFileSync("openalexOptions.json", JSON.stringify(openalexOptions, null, 2));
+  const openalex = new Openalex();
+  const result = await openalex.works(openalexOptions);
+  return result;
+};
+
 export async function searchWork(args: any) {
   let query = args.searchstring;
-  const searchField = args.title_and_abstracte ? 'title_and_abstract' : 'title';
-  const openalex = new Openalex();
+  const searchField = args.title_and_abstract ? 'title_and_abstract' : 'title';
   if (args.searchstringfromfile) {
     if (!fs.existsSync(args.searchstringfromfile)) {
       console.log('File not found: ' + args.searchstringfromfile);
@@ -172,12 +179,13 @@ export async function searchWork(args: any) {
     query = query.split(/\r?\n/);
   }
   if (args.count) {
-    const result = await openalex.works({
+    const openalexOptions: SearchParameters = {
       searchField: searchField,
       search: searchBuilder(query),
       perPage: 1,
       page: 1,
-    });
+    };
+    const result = await saveAndSearch(openalexOptions);
     console.log('count:', result.meta.count);
     return result.meta.count;
   }
@@ -191,9 +199,7 @@ export async function searchWork(args: any) {
   if (args.startPage) openalexOptions['startPage'] = args.startPage;
   if (args.endPage) openalexOptions['endPage'] = args.endPage;
   if (args.save) openalexOptions['toJson'] = args.save;
-  // if (args.saveoptions) // TODO
-  fs.writeFileSync("openalexOptions.json", JSON.stringify(openalexOptions, null, 2));
-  const result = await openalex.works(openalexOptions);
+  const result = await saveAndSearch(openalexOptions);
   if (args.save) console.log('Results saved to', args.save);
   if (args.showtitle) {
     console.log(`Results: ${result.meta.count}`);
