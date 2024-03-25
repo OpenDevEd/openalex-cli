@@ -125,7 +125,10 @@ export function searchBuilder(query: any) {
         }
         const term = sanitise(resultarr[j].replace(/\#.+$/g, ''));
         if (term != '') {
-          result += (result.match(/[\w\"\)]\s+$/) && !term.match(/^\s*\)/) ? operator : '') + (useoperator ? quoteIfNeeded(term) : term) + ' ';
+          result +=
+            (result.match(/[\w\"\)]\s+$/) && !term.match(/^\s*\)/) ? operator : '') +
+            (useoperator ? quoteIfNeeded(term) : term) +
+            ' ';
         }
       }
       result = query[i].replace(RegExp(key + '\\.\\.\\.'), result);
@@ -161,11 +164,11 @@ function quoteIfNeeded(term: string) {
 
 async function saveAndSearch(openalexOptions: SearchParameters) {
   // if (args.saveoptions) // TODO
-  fs.writeFileSync("openalexOptions.json", JSON.stringify(openalexOptions, null, 2));
+  fs.writeFileSync('openalexOptions.json', JSON.stringify(openalexOptions, null, 2));
   const openalex = new Openalex();
   const result = await openalex.works(openalexOptions);
   return result;
-};
+}
 
 export async function searchWork(args: any) {
   let query = args.searchstring;
