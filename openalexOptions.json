@@ -1,6 +1,7 @@
 {
   "searchField": "title",
   "search": " africa ",
-  "perPage": 1,
-  "page": 1
+  "retriveAllPages": true,
+  "chunkSize": 1000,
+  "toJson": "africa"
 }
