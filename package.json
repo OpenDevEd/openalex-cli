@@ -8,7 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "setup": "npm install && npm run build && npm link && openalex-cli --help"
+    "setup": "npm install && npm run build && npm link && openalex-cli --help",
+    "lint": "npx eslint . --ext .ts",
+    "lint:fix": "npx eslint . --ext .ts --fix",
+    "pretty": "npx prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -23,7 +26,7 @@
   "homepage": "https://github.com/OpenDevEd/openalex-cli#readme",
   "dependencies": {
     "commander": "^12.0.0",
-    "openalex-sdk": "^1.1.2",
+    "openalex-sdk": "^1.1.3",
     "typescript": "^5.3.3",
     "yargs": "^17.7.2"
   },
