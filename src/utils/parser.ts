@@ -199,6 +199,7 @@ export async function searchWork(args: any) {
   if (args.page) openalexOptions['page'] = args.page;
   if (args.perPage) openalexOptions['perPage'] = args.perPage;
   if (args.allpages) openalexOptions['retriveAllPages'] = args.allpages;
+  if (args.chunkSize) openalexOptions['chunkSize'] = args.chunkSize;
   if (args.startPage) openalexOptions['startPage'] = args.startPage;
   if (args.endPage) openalexOptions['endPage'] = args.endPage;
   if (args.save) openalexOptions['toJson'] = args.save;

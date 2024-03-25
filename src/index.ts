@@ -45,6 +45,12 @@ yargs(hideBin(process.argv))
           describe: 'Retrieve all pages',
           type: 'boolean',
         })
+        // TODO: @bjohas need to review description of this option
+        .option('chunkSize', {
+          describe:
+            'this option only works with --allpages. It will retrieve the results in chunks of the specified size. E.g. --chunkSize=100 will retrieve 100 results at a time. and save them to files in a folder with same name in --save option,',
+          type: 'number',
+        })
         .option('save', {
           describe: 'Save the search results to a json file. E.g. --save=test will save results to test.json',
           type: 'string',
