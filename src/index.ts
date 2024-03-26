@@ -55,6 +55,10 @@ yargs(hideBin(process.argv))
           describe: 'Save the search results to a json file. E.g. --save=test will save results to test.json',
           type: 'string',
         })
+        .option('time', {
+          describe: 'Prepend the filename with the current date and time',
+          type: 'boolean',
+        })
         .option('searchstringfromfile', {
           describe: 'Search string read from file.',
           type: 'string',
