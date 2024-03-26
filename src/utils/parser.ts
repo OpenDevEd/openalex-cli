@@ -204,13 +204,11 @@ export async function searchWork(args: any) {
   if (args.endPage) openalexOptions['endPage'] = args.endPage;
   if (args.save) openalexOptions['toJson'] = args.save;
 
-  if (args.time) {
+  if (args.autosave) {
     let filename = openalexOptions.search?.trim().split('  ').join(' ');
-    if (args.save) {
-      filename = openalexOptions.toJson;
-    }
-    // YMD_HMS
-    const date = new Date().toISOString().replace(/[-:]/g, '').replace(/\..+/, '').replace('T', '_');
+
+    // Y-M-D_H:M:S
+    const date = new Date().toISOString().replace('T', '_').replace(/\..+/, '');
     openalexOptions['toJson'] = `${date}-${filename}`;
     args.save = openalexOptions['toJson'];
   }
