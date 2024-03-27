@@ -206,10 +206,13 @@ export async function searchWork(args: any) {
 
   if (args.autosave) {
     let filename = openalexOptions.search?.trim().split('  ').join(' ');
+    openalexOptions['toJson'] = filename;
 
-    // Y-M-D_H:M:S
-    const date = new Date().toISOString().replace('T', '_').replace(/\..+/, '');
-    openalexOptions['toJson'] = `${date}-${filename}`;
+    if (args.time) {
+      // Y-M-D_H:M:S
+      const date = new Date().toISOString().replace('T', '_').replace(/\..+/, '');
+      openalexOptions['toJson'] = `${date}-${filename}`;
+    }
     args.save = openalexOptions['toJson'];
   }
 
