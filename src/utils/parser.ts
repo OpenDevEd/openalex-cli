@@ -199,11 +199,12 @@ export async function searchWork(args: any) {
   if (args.page) openalexOptions['page'] = args.page;
   if (args.perPage) openalexOptions['perPage'] = args.perPage;
   if (args.allpages) openalexOptions['retriveAllPages'] = args.allpages;
-  if (args.chuckSize) openalexOptions['chunkSize'] = args.chuckSize;
+  if (args.chunkSize) openalexOptions['chunkSize'] = args.chunkSize;
   if (args.startPage) openalexOptions['startPage'] = args.startPage;
   if (args.endPage) openalexOptions['endPage'] = args.endPage;
   if (args.save) openalexOptions['toJson'] = args.save;
-
+  console.log(openalexOptions);
+  
   const result = await saveAndSearch(openalexOptions);
   if (args.save) console.log('Results saved to', args.save);
   if (args.showtitle) {
