@@ -45,6 +45,13 @@ Search openalex and save output:
 openalex-cli search --title  climate AND africa AND education --save output
 ```
 
+Search openalex and automatically save output,
+the output is saved in a file named `<Datetime>-<Search Query>`:
+
+```
+openalex-cli search --title  climate AND africa AND education --autosave
+```
+
 Search openalex, show titles, and save output:
 
 ```

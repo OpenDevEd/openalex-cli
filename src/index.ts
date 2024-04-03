@@ -55,6 +55,15 @@ yargs(hideBin(process.argv))
           describe: 'Save the search results to a json file. E.g. --save=test will save results to test.json',
           type: 'string',
         })
+        .option('time', {
+          describe: 'Prepend the filename with the current date and time',
+          type: 'boolean',
+          default: true,
+        })
+        .option('autosave', {
+          describe: 'Save the search results to a json file with the search string as the filename',
+          type: 'boolean',
+        })
         .option('searchstringfromfile', {
           describe: 'Search string read from file.',
           type: 'string',
@@ -77,6 +86,13 @@ yargs(hideBin(process.argv))
     }
     if (!argv.searchstring && !argv.searchstringfromfile) {
       console.log('Please provide a search string (positional args) or use --searchstringfromfile=file.txt.');
+      process.exit(1);
+    }
+    if (argv.save && argv.time) {
+      argv.time = false;
+    }
+    if (argv.save && argv.autosave) {
+      console.log('Please provide only one of --save or --autosave.');
       process.exit(1);
     }
     searchWork(argv);
