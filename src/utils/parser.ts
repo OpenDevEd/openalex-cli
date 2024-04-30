@@ -172,7 +172,7 @@ async function saveAndSearch(openalexOptions: SearchParameters) {
 
 export async function searchWork(args: any) {
   let query = args.searchstring;
-  const searchField = args.titleabs ? 'title_and_abstract' : 'title';
+  const searchField = args.titleAbs ? 'title_and_abstract' : 'title';
   if (args.searchstringfromfile) {
     if (!fs.existsSync(args.searchstringfromfile)) {
       console.log('File not found: ' + args.searchstringfromfile);
