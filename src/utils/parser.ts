@@ -1,4 +1,5 @@
 import fs from 'fs';
+import os from 'os';
 import Openalex from 'openalex-sdk';
 import { SearchParameters } from 'openalex-sdk/dist/src/types/work';
 
@@ -102,7 +103,10 @@ export function searchBuilder(query: any) {
       //console.log("expand: "+query[i]);
       const key = query[i].match(/(\w+)\.\.\./)[1];
       // open a file
-      const file = 'searchterms/' + key + '.txt';
+      let file = 'searchterms/' + key + '.txt';
+      if (!fs.existsSync(file)) {
+        file = `${os.homedir()}/.config/openalex-cli/searchterms/${key}.txt`;
+      }
       //console.log("f="+file);
       let result = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : key;
       // split result into an array by new line
