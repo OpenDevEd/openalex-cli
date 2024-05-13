@@ -183,7 +183,7 @@ async function saveAndSearch(openalexOptions: SearchParameters) {
   let openalex;
   const key = getKey();
   if (key) {
-    openalex = new Openalex(key);
+    openalex = new Openalex(null, key);
   } else {
     openalex = new Openalex();
   }
