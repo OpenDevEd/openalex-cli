@@ -166,10 +166,27 @@ function quoteIfNeeded(term: string) {
   return term;
 }
 
+function getKey() {
+  const keyFile = `${os.homedir()}/.config/openalex-cli/openalex-api-key.txt`;
+
+  if (!fs.existsSync(keyFile)) {
+    return null;
+  }
+
+  const key = fs.readFileSync(keyFile, 'utf8');
+  return key.trim();
+}
+
 async function saveAndSearch(openalexOptions: SearchParameters) {
   // if (args.saveoptions) // TODO
   fs.writeFileSync('openalexOptions.json', JSON.stringify(openalexOptions, null, 2));
-  const openalex = new Openalex();
+  let openalex;
+  const key = getKey();
+  if (key) {
+    openalex = new Openalex(key);
+  } else {
+    openalex = new Openalex();
+  }
   const result = await openalex.works(openalexOptions);
   return result;
 }
