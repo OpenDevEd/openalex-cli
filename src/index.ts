@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
+import setApiKey from './utils/config';
 import { searchWork } from './utils/parser';
 
 yargs(hideBin(process.argv))
@@ -75,7 +76,13 @@ yargs(hideBin(process.argv))
         })*/
     },
   )
-  .middleware((argv: any) => {
+  .command('config set api-key', 'Set the API key to be used for the search')
+  .middleware(async (argv: any) => {
+    if (argv._[0] === 'config') {
+      console.log('Config command');
+      await setApiKey();
+      process.exit(0);
+    }
     if (!argv.title && !argv.titleAbs) {
       console.log('Please provide a search field --title or --title-abs.');
       process.exit(1);
@@ -95,6 +102,6 @@ yargs(hideBin(process.argv))
       console.log('Please provide only one of --save or --autosave.');
       process.exit(1);
     }
-    searchWork(argv);
+    await searchWork(argv);
   })
   .parse();
