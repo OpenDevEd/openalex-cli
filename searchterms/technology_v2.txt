@@ -1,0 +1,87 @@
+#OR
+(
+Active Learning
+Adobe Spark
+Asynchronous Learning
+Blog
+Book Creator
+BrainPOP
+Canvas
+Chatbot
+Classcraft
+ClassDojo
+Classroom management
+Code.org
+Codecademy
+Collaborative Learning
+Competency-based education model
+Connected Learning
+Content authoring tools
+Curriculum design methodology
+Desmos
+Differentiated Instruction
+Digital Communication
+Edmodo
+Edpuzzle
+Educreations
+eTutor
+Explain Everything
+Facebook
+Flipgrid
+Flocabulary
+Formative assessment tools
+Forum
+Generative Artificial Intelligence
+GoGuardian
+Google Workspace
+ICT
+Information Technology
+Inquiry-Based Learning
+Intelligent Agent
+iXL Learning
+Kahoot!
+Kani
+Khan Academy
+Machine Learning
+Massive Open Online Course
+Metacognitive Strategies
+Microsoft 365 Education
+Minecraft
+Nearpod
+Notebook
+Oak National Academy
+Padlet
+Pear Deck
+Pearltrees
+Peer Teaching
+Podcast
+Popplet
+Problem-Based Learning (PBL)
+Project-based learning model
+Quizlet
+Reflection
+Remind
+Roblox
+Scaffolding
+Schoology
+Scratch
+Seesaw
+Simulation
+Social Media
+Social Network
+Socrative
+Speech-to-Text
+Storyboard That
+Synchronous Learning
+Television
+Text-to-Speech
+ThingLink
+Tinkercad
+Twitter
+Virtual Tutor
+Wakelet
+WeVideo
+WhatsApp
+YouTube
+Zoom
+)

@@ -1,0 +1,176 @@
+#OR
+(
+Australia
+Austria
+Belgium
+Brazil
+Canada
+China
+Cyprus
+Czech Republic
+Czechia
+Denmark
+Estonia
+Finland
+France
+Germany
+Hong Kong
+Hungary
+Iceland
+Ireland
+Israel
+Italy
+Japan
+Korea
+Latvia
+Luxembourg
+Malaysia
+Malta
+Netherlands
+Aotearoa
+New Zealand
+Norway
+Poland
+Portugal
+Russian Federation
+Singapore
+Slovakia
+Slovenia
+Spain
+Sweden
+Switzerland
+UAE
+United Arab Emirates
+England
+UK
+United Kingdom
+United States
+US
+Arab World
+Asia-Pacific
+Middle East
+MENA
+SEA
+South East Asia
+Southeast Asia
+Southeastern Asia
+East Asia 
+Americas
+EAP
+Eastern Asia
+Europe
+ECA
+Latin America 
+LAC
+North America
+Northern America
+Pacific
+South America
+Southern America
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
