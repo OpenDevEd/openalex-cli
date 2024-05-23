@@ -1,1 +1,170 @@
-test...
+#OR
+(
+Accessibility features
+Adaptive learning algorithms
+App
+Artificial Intelligence
+Assessment platforms
+Audio
+Augmented reality (AR) applications
+Blended Learning
+Computer
+Data visualisation dashboards
+Desktop
+Digital Content
+Digital Learning
+Digital Personalised and Adaptive Learning
+Digital Personalised Learning
+Digital Resources
+Digital Storybook
+Digital Technology
+Digital textbooks
+Distance Education
+Distance Learning
+e-book
+e-Reader
+eBook
+EdTech
+Education technologies
+Education technology
+Educational gaming platforms
+Educational software applications
+Educational technologies
+Educational technology
+eLearning
+Electronic Textbook
+eReader
+Feedback
+Flipped Classroom
+Flipped Learning
+Game-Based Learning
+Gamification
+Handheld device
+Hybrid Learning
+Intelligent Tutoring System
+Interactive multimedia resources
+Interactive whiteboards
+Laptop
+Learning analytics platforms
+Learning management system (LMS) analytics
+Learning Management Systems
+Learning Platform
+Mobile Application
+Mobile Education
+Mobile Learning
+Moodle
+Multimedia Instruction
+Multimedia Learning Resource
+Multimedia Lesson
+Online Course
+Online Discussion
+Online Forum
+Online Learning
+Online Textbook
+Online Tutor
+Open and Distance eLearning
+Open and Distance Learning
+Open Education
+Open Learning
+Personalised Educational Systems
+Personalised learning model
+Personalised learning paths
+Personalised Learning Platform
+Personalised Learning Systems
+Personalized Learning Platform
+Personalized Learning Systems
+Phone
+Radio
+Remote Learning
+Student data management systems
+Tablet
+Technology-Assisted Learning
+Video
+Virtual Classroom
+Virtual Learning
+Virtual reality (VR) simulations
+Active Learning
+Adobe Spark
+Asynchronous Learning
+Blog
+Book Creator
+BrainPOP
+Canvas
+Chatbot
+Classcraft
+ClassDojo
+Classroom management
+Code.org
+Codecademy
+Collaborative Learning
+Competency-based education model
+Connected Learning
+Content authoring tools
+Curriculum design methodology
+Desmos
+Differentiated Instruction
+Digital Communication
+Edmodo
+Edpuzzle
+Educreations
+eTutor
+Explain Everything
+Facebook
+Flipgrid
+Flocabulary
+Formative assessment tools
+Forum
+Generative Artificial Intelligence
+GoGuardian
+Google Workspace
+ICT
+Information Technology
+Inquiry-Based Learning
+Intelligent Agent
+iXL Learning
+Kahoot!
+Kani
+Khan Academy
+Machine Learning
+Massive Open Online Course
+Metacognitive Strategies
+Microsoft 365 Education
+Minecraft
+Nearpod
+Notebook
+Oak National Academy
+Padlet
+Pear Deck
+Pearltrees
+Peer Teaching
+Podcast
+Popplet
+Problem-Based Learning (PBL)
+Project-based learning model
+Quizlet
+Reflection
+Remind
+Roblox
+Scaffolding
+Schoology
+Scratch
+Seesaw
+Simulation
+Social Media
+Social Network
+Socrative
+Speech-to-Text
+Storyboard That
+Synchronous Learning
+Television
+Text-to-Speech
+ThingLink
+Tinkercad
+Twitter
+Virtual Tutor
+Wakelet
+WeVideo
+WhatsApp
+YouTube
+Zoom
+)

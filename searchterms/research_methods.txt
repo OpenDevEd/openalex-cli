@@ -1,0 +1,176 @@
+#OR
+(
+Case Report
+Case Study
+Cross-Sectional Study
+Descriptive Study
+Ethnographic Research
+Ethnography
+Longitudinal Research
+Observation
+Systems Research
+Tracer Study
+Assessment
+Cohort Study
+Difference in Difference
+Evaluation
+Experiment
+Pre- and Post-Test
+QED
+Quasi-Experimental Design
+RCT
+Randomised Pretest-Posttest Design
+Randomized Pretest-Posttest Design
+Regression
+Action Research
+Adaptive
+Agile
+DBIR
+DBR
+Design-based Research
+Formative Research
+Implementation Research
+Iterative
+Participatory
+Pilot
+Process Evaluation
+Testing
+Trial
+Review
+Synthesis
+Meta-Analysis
+Mixed-method
+Multi-methods
+Multimethods
+Learning Analytics
+Monitoring
+M and E
+MEAL
+MEL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+)
