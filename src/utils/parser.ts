@@ -1,7 +1,9 @@
 import fs from 'fs';
-import os from 'os';
 import Openalex from 'openalex-sdk';
 import { SearchParameters } from 'openalex-sdk/dist/src/types/work';
+import { WorkFilterParameters } from 'openalex-sdk/dist/src/types/workFilterParameters';
+import os from 'os';
+import { createMeta } from './helpers';
 
 /*
 export async function parseTitle(title: string[]) {
@@ -193,6 +195,9 @@ async function saveAndSearch(openalexOptions: SearchParameters) {
 
 export async function searchWork(args: any) {
   let query = args.searchstring;
+  // join  searchstring array into a string
+
+  args.searchTerm = args.searchstring.join(' ');
   const searchField = args.titleAbs ? 'title_and_abstract' : 'title';
   if (args.searchstringfromfile) {
     if (!fs.existsSync(args.searchstringfromfile)) {
@@ -202,6 +207,7 @@ export async function searchWork(args: any) {
     query = fs.readFileSync(args.searchstringfromfile, 'utf8');
     query = query.split(/\r?\n/);
   }
+  args.search = searchBuilder(query).trim();
   if (args.count) {
     const openalexOptions: SearchParameters = {
       searchField: searchField,
@@ -217,6 +223,11 @@ export async function searchWork(args: any) {
     searchField: searchField,
     search: searchBuilder(query),
   };
+  const filter: WorkFilterParameters = {
+    publication_year: [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+  };
+  openalexOptions.filter = filter;
+  args.filter = filter;
   if (args.page) openalexOptions['page'] = args.page;
   if (args.perPage) openalexOptions['perPage'] = args.perPage;
   if (args.allpages) openalexOptions['retriveAllPages'] = args.allpages;
@@ -238,6 +249,28 @@ export async function searchWork(args: any) {
   }
 
   const result = await saveAndSearch(openalexOptions);
+  // console.log('Results:', result.meta);
+  const meta = createMeta(args);
+  meta.totalResults = result.meta.count;
+  meta.page = result.meta.page;
+  //@ts-ignore
+  // add meta to result.meta
+  result.meta = meta;
+  console.log('Results:', result.meta);
+  // open a file and change the meta data
+  // check if the file exists
+  if (args.save) {
+    if (fs.existsSync(`${args.save}.json`)) {
+      // open the file
+      const file = fs.readFileSync(`${args.save}.json`, 'utf8');
+      // parse the file
+      const json = JSON.parse(file);
+      // change the meta data
+      json.meta = meta;
+      // write the file
+      fs.writeFileSync(`${args.save}.json`, JSON.stringify(json, null, 2));
+    }
+  }
   if (args.save) console.log('Results saved to', args.save);
   if (args.showtitle) {
     console.log(`Results: ${result.meta.count}`);
