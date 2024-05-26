@@ -10,7 +10,7 @@ export function createMeta(args: any) {
     date: new Date().toISOString(),
     searchField: args.searchField || 'title',
     page: args.startPage || 1,
-    resultsPerPage: args.perPage || 25,
+    resultsPerPage: args.perPage || args.chunkSize || 25,
     firstItem: 1,
     startingPage: args.startPage || 1,
     endingPage: args.endPage,

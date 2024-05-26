@@ -271,6 +271,26 @@ export async function searchWork(args: any) {
       fs.writeFileSync(`${args.save}.json`, JSON.stringify(json, null, 2));
     }
   }
+  if (args.chunkSize) {
+    if (args.save) {
+      // find folder with same name as save with _all appended
+      const folder = `${args.save}`;
+      // check if folder exists
+      if (fs.existsSync(folder)) {
+        // loop through all files in folder
+        fs.readdirSync(folder).forEach((file) => {
+          // read the file
+          const json = JSON.parse(fs.readFileSync(`${folder}/${file}`, 'utf8'));
+          // change the meta data
+          json.meta = meta;
+          // write the file
+          fs.writeFileSync(`${folder}/${file}`, JSON.stringify(json, null, 2));
+        });
+      }
+    }
+  }
+
+  //
   if (args.save) console.log('Results saved to', args.save);
   if (args.showtitle) {
     console.log(`Results: ${result.meta.count}`);
