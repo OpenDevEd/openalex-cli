@@ -1,6 +1,6 @@
 {
   "searchField": "title",
-  "search": " ( \"Algeria\" OR \"Angola\" OR \"Benin\" OR \"Botswana\" OR \"Burkina Faso\" OR \"Burundi\" OR \"Cameroon\" OR \"Cape Verde\" OR \"Central African Republic\" OR \"Chad\" OR \"Comoros\" OR \"Congo\" OR \"Djibouti\" OR \"DRC\" OR \"Egypt\" OR \"Equatorial Guinea\" OR \"Eritrea\" OR \"Eswatini\" OR \"Ethiopia\" OR \"Gabon\" OR \"Gambia\" OR \"Ghana\" OR \"Guinea\" OR \"Guinea-Bissau\" OR \"Ivory Coast\" OR \"Kenya\" OR \"Lesotho\" OR \"Liberia\" OR \"Libya\" OR \"Madagascar\" OR \"Malawi\" OR \"Mali\" OR \"Mauritania\" OR \"Mauritius\" OR \"Morocco\" OR \"Mozambique\" OR \"Namibia\" OR \"Niger\" OR \"Nigeria\" OR \"Puntland\" OR \"Rwanda\" OR \"Sahrawi Arab Democratic Republic\" OR \"Senegal\" OR \"Seychelles\" OR \"Sierra Leone\" OR \"Somalia\" OR \"Somaliland\" OR \"South Africa\" OR \"South Sudan\" OR \"Sudan\" OR \"Swaziland\" OR \"São Tomé and Príncipe\" OR \"Tanzania\" OR \"Togo\" OR \"Tunisia\" OR \"Uganda\" OR \"Zambia\" OR \"Zimbabwe\" ) ",
+  "search": " aecs ",
   "filter": {
     "publication_year": [
       2011,
@@ -19,8 +19,7 @@
       2024
     ]
   },
-  "perPage": 5,
-  "startPage": 1,
-  "endPage": 1,
-  "toJson": "test"
+  "retriveAllPages": true,
+  "chunkSize": 1000,
+  "toJson": "2024-05-27_12:39:04-aecs"
 }
