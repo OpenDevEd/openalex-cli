@@ -1,0 +1,29 @@
+diff --git a/node_modules/openalex-sdk/dist/src/utils/works.js b/node_modules/openalex-sdk/dist/src/utils/works.js
+index 46d5d38..07b7077 100644
+--- a/node_modules/openalex-sdk/dist/src/utils/works.js
++++ b/node_modules/openalex-sdk/dist/src/utils/works.js
+@@ -30,6 +30,7 @@ async function handleAllPages(url, initialResponse, toJson, toCsv, AbstractArray
+     const totalPages = (0, helpers_1.calculatePages)(200, initialResponse.data.meta.count);
+     const works = initialResponse.data;
+     let cursor = works.meta.next_cursor;
++    works.meta.queryUrl = url;
+     console.log('total number of pages ', totalPages);
+     console.log('page', 1, 'response', initialResponse.status);
+     for (let i = 2; i <= totalPages; i++) {
+@@ -65,6 +66,7 @@ exports.handleAllPages = handleAllPages;
+ async function handleMultiplePages(startPage, endPage, url, initialResponse, toJson, toCsv, AbstractArrayToString) {
+     const works = initialResponse.data;
+     let cursor = works.meta.next_cursor;
++    works.meta.queryUrl = url;
+     url = url.split('&cursor')[0];
+     for (let i = startPage + 1; i <= endPage; i++) {
+         const response = await (0, http_1.GET)(`${url}&cursor=${cursor}`);
+@@ -131,6 +133,8 @@ async function handleAllPagesInChunks(url, initialResponse, toJson, toCsv, Abstr
+                     workstemp.meta.page = page;
+                     workstemp.meta.per_page = chunkSize;
+                     workstemp.meta.firstItem = start + 1;
++                    workstemp.meta.queryUrl = url;
++
+                     end = start + chunk.length;
+                     const startFormatted = formatNumber(Number((start + 1).toString().padStart(7, '0')));
+                     const endFormatted = formatNumber(Number(end.toString().padStart(7, '0')));
