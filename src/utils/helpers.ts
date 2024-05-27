@@ -1,6 +1,10 @@
+// create UUID
+import { v4 as uuidv4 } from 'uuid';
+
 // function to create metadata for a search
 export function createMeta(args: any) {
   return {
+    searchID: uuidv4(),
     version: 'OpenDevEd_jsonUploaderV01',
     query: args.search,
     searchTerm: args.searchTerm || 'title',
@@ -18,7 +22,7 @@ export function createMeta(args: any) {
     groupBy: '',
     sortBy: {
       field: 'relevance',
-      order: 'asc',
+      order: 'desc',
     },
   };
 }

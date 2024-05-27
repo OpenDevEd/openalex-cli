@@ -189,6 +189,10 @@ async function saveAndSearch(openalexOptions: SearchParameters) {
   } else {
     openalex = new Openalex();
   }
+  openalexOptions.sortBy = {
+    field: 'relevance_score',
+    order: 'desc',
+  };
   const result = await openalex.works(openalexOptions);
   return result;
 }
