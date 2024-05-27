@@ -109,6 +109,7 @@ export function searchBuilder(query: any) {
       if (!fs.existsSync(file)) {
         file = `${os.homedir()}/.config/openalex-cli/searchterms/${key}.txt`;
       }
+      // TODO: Throw error if file does not exist
       //console.log("f="+file);
       let result = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : key;
       // split result into an array by new line
