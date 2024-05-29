@@ -35,11 +35,15 @@ yargs(hideBin(process.argv))
           type: 'number',
         })
         .option('startPage', {
-          describe: 'Start page number',
+          describe: 'Start page number, >= 1',
           type: 'number',
         })
         .option('endPage', {
           describe: 'End page number',
+          type: 'number',
+        })
+        .option('limit', {
+          describe: 'Number of results to retrieve. This sets perPage to 200, and retrieves as many pages as needed, starting with startPage if set.',
           type: 'number',
         })
         .option('allpages', {
