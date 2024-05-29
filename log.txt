@@ -1,0 +1,32 @@
+Final query:  ( "Algeria" OR "Angola" OR "Benin" OR "Botswana" OR "Burkina Faso" OR "Burundi" OR "Cameroon" OR "Cape Verde" OR "Central African Republic" OR "Chad" OR "Comoros" OR "Congo" OR "Djibouti" OR "DRC" OR "Egypt" OR "Equatorial Guinea" OR "Eritrea" OR "Eswatini" OR "Ethiopia" OR "Gabon" OR "Gambia" OR "Ghana" OR "Guinea" OR "Guinea-Bissau" OR "Ivory Coast" OR "Kenya" OR "Lesotho" OR "Liberia" OR "Libya" OR "Madagascar" OR "Malawi" OR "Mali" OR "Mauritania" OR "Mauritius" OR "Morocco" OR "Mozambique" OR "Namibia" OR "Niger" OR "Nigeria" OR "Puntland" OR "Rwanda" OR "Sahrawi Arab Democratic Republic" OR "Senegal" OR "Seychelles" OR "Sierra Leone" OR "Somalia" OR "Somaliland" OR "South Africa" OR "South Sudan" OR "Sudan" OR "Swaziland" OR "São Tomé and Príncipe" OR "Tanzania" OR "Togo" OR "Tunisia" OR "Uganda" OR "Zambia" OR "Zimbabwe" ) 
+started search process with uuid: c1126de7-302f-4874-a456-dae356eb7376
+Retrieving page 1
+- Progress: 4.00%
+- Remaining queries: 4800
+- Remaining queries after search: 1259262
+- Estimated time to complete search: 00:00:30
+Retrieving page 2
+- Progress: 8.00%
+- Remaining queries: 4600
+- Remaining queries after search: 1259062
+- Estimated time to complete search: 00:00:28
+Retrieving page 3
+- Progress: 12.00%
+- Remaining queries: 4400
+- Remaining queries after search: 1258862
+- Estimated time to complete search: 00:00:27
+Retrieving page 4
+- Progress: 16.00%
+- Remaining queries: 4200
+- Remaining queries after search: 1258662
+- Estimated time to complete search: 00:00:26
+Retrieving page 5
+- Progress: 20.00%
+- Remaining queries: 4000
+- Remaining queries after search: 1258462
+- Estimated time to complete search: 00:00:25
+Retrieving page 6
+- Progress: 24.00%
+- Remaining queries: 3800
+- Remaining queries after search: 1258262
+- Estimated time to complete search: 00:00:24
