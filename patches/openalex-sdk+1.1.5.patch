@@ -47,7 +47,7 @@ index b935d65..d4041aa 100644
  //# sourceMappingURL=helpers.js.map
 +// create function that will create a text file or append to an existing text file in new line to add the log and work async
 diff --git a/node_modules/openalex-sdk/dist/src/utils/works.js b/node_modules/openalex-sdk/dist/src/utils/works.js
-index 46d5d38..2b3ca01 100644
+index 46d5d38..c28dd22 100644
 --- a/node_modules/openalex-sdk/dist/src/utils/works.js
 +++ b/node_modules/openalex-sdk/dist/src/utils/works.js
 @@ -8,6 +8,7 @@ const fs_1 = __importDefault(require("fs"));
@@ -64,7 +64,7 @@ index 46d5d38..2b3ca01 100644
      const totalPages = (0, helpers_1.calculatePages)(200, initialResponse.data.meta.count);
 +    const uuid = await generateUUID();
 +    await logWork(`started search process with uuid: ${uuid}`, logWorkPath);
-+    await retrievingPage(startPage, endPage, works.meta.per_page, logWorkPath);
++    await retrievingPage(startPage, endPage, works.meta.per_page, logWorkPath,false, works.meta.count);
 +
 +    
      const works = initialResponse.data;
@@ -77,7 +77,7 @@ index 46d5d38..2b3ca01 100644
          if (response.status === 200) {
              works.results = works.results.concat(response.data.results);
              cursor = response.data.meta.next_cursor;
-+            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath,false, works.meta.count);
          }
          else
              throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -85,7 +85,7 @@ index 46d5d38..2b3ca01 100644
 +        if (i === totalPages && startPage === totalPages) {
              works.meta.next_cursor = cursor;
              works.meta.page = totalPages;
-+            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath,false, works.meta.count);
 +
          }
      }
@@ -115,7 +115,7 @@ index 46d5d38..2b3ca01 100644
 +    let count = 1;
 +    const uuid = await generateUUID();
 +    await logWork(`started search process with uuid: ${uuid}`, logWorkPath);
-+    await retrievingPage(startPage, endPage, works.meta.per_page, logWorkPath);
++    await retrievingPage(startPage, endPage, works.meta.per_page, logWorkPath ,false, works.meta.count);
 +    works.meta.queryUrl = url;
      url = url.split('&cursor')[0];
      for (let i = startPage + 1; i <= endPage; i++) {
@@ -123,7 +123,7 @@ index 46d5d38..2b3ca01 100644
          if (response.status === 200) {
              works.results = works.results.concat(response.data.results);
              cursor = response.data.meta.next_cursor;
-+            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath ,false, works.meta.count);
 +            
          }
          else
@@ -132,7 +132,7 @@ index 46d5d38..2b3ca01 100644
 +        if (i === endPage && startPage === endPage) {
              works.meta.next_cursor = cursor;
              works.meta.page = endPage;
-+            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath ,false, works.meta.count);
          }
 +        count++;
      }
@@ -198,12 +198,13 @@ index 46d5d38..2b3ca01 100644
      return;
  }
  exports.handleAllPagesInChunks = handleAllPagesInChunks;
-@@ -164,3 +207,55 @@ function formatNumber(num) {
+@@ -164,3 +207,66 @@ function formatNumber(num) {
  }
  exports.formatNumber = formatNumber;
  //# sourceMappingURL=works.js.map
 +async function logWork(data, logFile) {
 +    try {
++        console.log(data);
 +       if (!fs_1.default.existsSync(logFile)) {
 +        fs_1.default.writeFileSync(logFile, data);
 +       }
@@ -234,10 +235,20 @@ index 46d5d38..2b3ca01 100644
 +    const completedPages = startPage ;
 +    // Calculate progress percentage
 +    const percentage = (completedPages / totalPages) * 100;
-+    console.log('total pages', totalPages, 'completed pages', completedPages, 'percentage', percentage.toFixed(2) + '%');
 +    // calculate the total process is done as a percentage from remaining queries if it is not a chunk and if it is a chunk calculate the percentage from the total count
 +    await logWork(`- Progress: ${percentage.toFixed(2)}%`, logFile);
 +    await logWork(`- Remaining queries: ${remainingQueries}`, logFile);
++    // count remaining queries after search
++    const remainingQueriesAfterSearch = count - startPage * per_page;
++    await logWork(`- Remaining queries after search: ${remainingQueriesAfterSearch}`, logFile);
++    // calculate estimated time to complete the search
++    const estimatedTimePerQuery = 1.2;
++    const estimatedTime = estimatedTimePerQuery * (endPage - startPage + 1) 
++    // calculate the estimated time to complete the search in : HH:MM:SS
++    const estimatedTimeFormatted = new Date(estimatedTime * 1000).toISOString().substr(11, 8);
++    await logWork(`- Estimated time to complete search: ${estimatedTimeFormatted}`, logFile);
++
++
 +    
 +    
 +}

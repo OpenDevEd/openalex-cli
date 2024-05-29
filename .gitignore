@@ -2,3 +2,4 @@ node_modules/
 dist/
 test.json
 meta.json
+log.txt
