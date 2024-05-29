@@ -1,24 +1,187 @@
+diff --git a/node_modules/openalex-sdk/dist/src/index.js b/node_modules/openalex-sdk/dist/src/index.js
+index c6e3917..0001a4f 100644
+--- a/node_modules/openalex-sdk/dist/src/index.js
++++ b/node_modules/openalex-sdk/dist/src/index.js
+@@ -11,6 +11,7 @@ const http_1 = require("./utils/http");
+ const institutions_1 = require("./utils/institutions");
+ const sources_1 = require("./utils/sources");
+ const works_1 = require("./utils/works");
++const logWorkPath = 'log.txt';
+ class OpenAlex {
+     constructor(email = null, apiKey = null) {
+         this.url = 'https://api.openalex.org';
+@@ -62,6 +63,7 @@ class OpenAlex {
+             cursor = await (0, helpers_1.getCursorByPage)(url, startPage, perPage);
+         }
+         url = (0, helpers_1.appendCursorToUrl)(url, perPage, cursor, retriveAllPages);
++        await works_1.logWork(`Final query: ${search}`, logWorkPath);
+         const response = await (0, http_1.GET)(url);
+         if (response.status === 200) {
+             response.data.meta.page = page !== null && page !== void 0 ? page : 1;
+@@ -87,6 +89,7 @@ class OpenAlex {
+             if (toCsv) {
+                 (0, exportCSV_1.convertToCSV)(response.data.results, toCsv);
+             }
++
+             return response.data;
+         }
+         else {
+diff --git a/node_modules/openalex-sdk/dist/src/utils/helpers.js b/node_modules/openalex-sdk/dist/src/utils/helpers.js
+index b935d65..d4041aa 100644
+--- a/node_modules/openalex-sdk/dist/src/utils/helpers.js
++++ b/node_modules/openalex-sdk/dist/src/utils/helpers.js
+@@ -1,7 +1,10 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
++
++
+ exports.convertAbstractArrayToString = exports.calculatePages = exports.getCursorByPage = exports.appendCursorToUrl = exports.getPaths = exports.buildUrl = void 0;
+ const http_1 = require("./http");
++
+ function buildUrl(baseUrl, endPoints, search, searchField, filter, group_by, sortBy) {
+     let filterParams = '';
+     let SearchParams = '';
+@@ -132,3 +135,4 @@ function convertAbstractArrayToString(abstract) {
+ }
+ exports.convertAbstractArrayToString = convertAbstractArrayToString;
+ //# sourceMappingURL=helpers.js.map
++// create function that will create a text file or append to an existing text file in new line to add the log and work async
 diff --git a/node_modules/openalex-sdk/dist/src/utils/works.js b/node_modules/openalex-sdk/dist/src/utils/works.js
-index 46d5d38..07b7077 100644
+index 46d5d38..2b3ca01 100644
 --- a/node_modules/openalex-sdk/dist/src/utils/works.js
 +++ b/node_modules/openalex-sdk/dist/src/utils/works.js
-@@ -30,6 +30,7 @@ async function handleAllPages(url, initialResponse, toJson, toCsv, AbstractArray
+@@ -8,6 +8,7 @@ const fs_1 = __importDefault(require("fs"));
+ const exportCSV_1 = require("./exportCSV");
+ const helpers_1 = require("./helpers");
+ const http_1 = require("./http");
++const logWorkPath = 'log.txt';
+ function validateParameters(retrieveAllPages, startPage, endPage, searchField, chunkSize, toJson, toCsv) {
+     if (retrieveAllPages && (startPage || endPage))
+         throw new Error('startPage and endPage are not allowed with retrieveAllPages');
+@@ -28,8 +29,14 @@ function validateParameters(retrieveAllPages, startPage, endPage, searchField, c
+ exports.validateParameters = validateParameters;
+ async function handleAllPages(url, initialResponse, toJson, toCsv, AbstractArrayToString) {
      const totalPages = (0, helpers_1.calculatePages)(200, initialResponse.data.meta.count);
++    const uuid = await generateUUID();
++    await logWork(`started search process with uuid: ${uuid}`, logWorkPath);
++    await retrievingPage(startPage, endPage, works.meta.per_page, logWorkPath);
++
++    
      const works = initialResponse.data;
      let cursor = works.meta.next_cursor;
 +    works.meta.queryUrl = url;
      console.log('total number of pages ', totalPages);
      console.log('page', 1, 'response', initialResponse.status);
      for (let i = 2; i <= totalPages; i++) {
-@@ -65,6 +66,7 @@ exports.handleAllPages = handleAllPages;
+@@ -38,12 +45,15 @@ async function handleAllPages(url, initialResponse, toJson, toCsv, AbstractArray
+         if (response.status === 200) {
+             works.results = works.results.concat(response.data.results);
+             cursor = response.data.meta.next_cursor;
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
+         }
+         else
+             throw new Error(`Error ${response.status}: ${response.statusText}`);
+-        if (i === totalPages) {
++        if (i === totalPages && startPage === totalPages) {
+             works.meta.next_cursor = cursor;
+             works.meta.page = totalPages;
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
++
+         }
+     }
+     if (AbstractArrayToString) {
+@@ -55,29 +65,45 @@ async function handleAllPages(url, initialResponse, toJson, toCsv, AbstractArray
+         });
+     }
+     if (toJson)
+-        fs_1.default.writeFileSync(`${toJson}.json`, JSON.stringify(works, null, 2));
++        {
++            fs_1.default.writeFileSync(`${toJson}.json`, JSON.stringify(works, null, 2));
++            await logWork(`- Results:${works.count}`, logWorkPath)
++            await logWork(`- Output: ${toJson}.json`, logWorkPath)
++        }
+     if (toCsv) {
+         (0, exportCSV_1.convertToCSV)(works.results, toCsv);
++        await logWork(`- Results:${works.count}`, logWorkPath)
++        await logWork(`- Output: ${toCsv}.csv`, logWorkPath)
+     }
++    await logWork(`finished search process with uuid: ${uuid}`, logWorkPath);
+     return works;
+ }
+ exports.handleAllPages = handleAllPages;
  async function handleMultiplePages(startPage, endPage, url, initialResponse, toJson, toCsv, AbstractArrayToString) {
      const works = initialResponse.data;
      let cursor = works.meta.next_cursor;
++    let count = 1;
++    const uuid = await generateUUID();
++    await logWork(`started search process with uuid: ${uuid}`, logWorkPath);
++    await retrievingPage(startPage, endPage, works.meta.per_page, logWorkPath);
 +    works.meta.queryUrl = url;
      url = url.split('&cursor')[0];
      for (let i = startPage + 1; i <= endPage; i++) {
          const response = await (0, http_1.GET)(`${url}&cursor=${cursor}`);
-@@ -131,6 +133,8 @@ async function handleAllPagesInChunks(url, initialResponse, toJson, toCsv, Abstr
+         if (response.status === 200) {
+             works.results = works.results.concat(response.data.results);
+             cursor = response.data.meta.next_cursor;
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
++            
+         }
+         else
+             throw new Error(`Error ${response.status}: ${response.statusText}`);
+-        if (i === endPage) {
++        if (i === endPage && startPage === endPage) {
+             works.meta.next_cursor = cursor;
+             works.meta.page = endPage;
++            await retrievingPage(i, endPage, works.meta.per_page, logWorkPath);
+         }
++        count++;
+     }
+     if (AbstractArrayToString) {
+         works.results = works.results.map((work) => {
+@@ -88,9 +114,18 @@ async function handleMultiplePages(startPage, endPage, url, initialResponse, toJ
+         });
+     }
+     if (toJson)
+-        fs_1.default.writeFileSync(`${toJson}.json`, JSON.stringify(works, null, 2));
++        {
++            fs_1.default.writeFileSync(`${toJson}.json`, JSON.stringify(works, null, 2));
++            await logWork(`- Results:${works.results.length}`, logWorkPath)
++            await logWork(`- Output: ${toJson}.json`, logWorkPath)
++        }
+     if (toCsv)
+-        (0, exportCSV_1.convertToCSV)(works.results, toCsv);
++        {
++            (0, exportCSV_1.convertToCSV)(works.results, toCsv);
++            await logWork(`- Results:${works.results.length}`, logWorkPath)
++            await logWork(`- Output: ${toCsv}.csv`, logWorkPath)
++        }
++    await logWork(`finished search process with uuid: ${uuid}`, logWorkPath);
+     return works;
+ }
+ exports.handleMultiplePages = handleMultiplePages;
+@@ -98,16 +133,21 @@ async function handleAllPagesInChunks(url, initialResponse, toJson, toCsv, Abstr
+     const totalPages = (0, helpers_1.calculatePages)(200, initialResponse.data.meta.count);
+     const works = initialResponse.data;
+     let cursor = works.meta.next_cursor;
++    const uuid = await generateUUID();
++    await logWork(`started search process with uuid: ${uuid}`, logWorkPath);
+     console.log('total number of pages ', totalPages);
+     console.log('page', 1, 'response', initialResponse.status);
+     let chunk = [];
+     chunk.push(...works.results);
+     let start = 0;
+     let end;
++    await retrievingPage(1, totalPages, 200, logWorkPath, true, works.meta.count);
++
+     for (let i = 1; i <= totalPages - 1; i++) {
+         const response = await (0, http_1.GET)(`${url}${cursor}`);
+         console.log('page', i, 'response', response.status);
+         if (response.status === 200) {
++            await retrievingPage(i+1, totalPages, 200, logWorkPath, true, response.data.meta.count);
+             chunk.push(...response.data.results);
+             cursor = response.data.meta.next_cursor;
+             if (chunk.length >= chunkSize || i === totalPages - 1) {
+@@ -131,6 +171,8 @@ async function handleAllPagesInChunks(url, initialResponse, toJson, toCsv, Abstr
                      workstemp.meta.page = page;
                      workstemp.meta.per_page = chunkSize;
                      workstemp.meta.firstItem = start + 1;
@@ -27,3 +190,79 @@ index 46d5d38..07b7077 100644
                      end = start + chunk.length;
                      const startFormatted = formatNumber(Number((start + 1).toString().padStart(7, '0')));
                      const endFormatted = formatNumber(Number(end.toString().padStart(7, '0')));
+@@ -153,6 +195,7 @@ async function handleAllPagesInChunks(url, initialResponse, toJson, toCsv, Abstr
+         else
+             throw new Error(`Error ${response.status}: ${response.statusText}`);
+     }
++    await logWork(`finished search process with uuid: ${uuid}`, logWorkPath);
+     return;
+ }
+ exports.handleAllPagesInChunks = handleAllPagesInChunks;
+@@ -164,3 +207,55 @@ function formatNumber(num) {
+ }
+ exports.formatNumber = formatNumber;
+ //# sourceMappingURL=works.js.map
++async function logWork(data, logFile) {
++    try {
++       if (!fs_1.default.existsSync(logFile)) {
++        fs_1.default.writeFileSync(logFile, data);
++       }
++         else {
++            //read the file
++            let fileData = fs_1.default.readFileSync(logFile, 'utf8');
++            //append the new data to the file
++            fileData += '\n' + data;
++            //write the file
++            fs_1.default.writeFileSync(logFile, fileData);
++            
++         }
++
++    }
++    catch (error) {
++        console.error(error);
++    }
++}
++
++async function retrievingPage(startPage, endPage, per_page, logFile, isChunk = false,count ) {
++    await logWork(`Retrieving page ${startPage}`, logFile);
++    let remainingQueries = !isChunk ? ((endPage-startPage+1 )* per_page) - per_page:count -startPage * per_page
++    if (remainingQueries < 0) {
++        remainingQueries = 0;
++    }
++    // Calculate total pages and completed pages
++    const totalPages = endPage
++    const completedPages = startPage ;
++    // Calculate progress percentage
++    const percentage = (completedPages / totalPages) * 100;
++    console.log('total pages', totalPages, 'completed pages', completedPages, 'percentage', percentage.toFixed(2) + '%');
++    // calculate the total process is done as a percentage from remaining queries if it is not a chunk and if it is a chunk calculate the percentage from the total count
++    await logWork(`- Progress: ${percentage.toFixed(2)}%`, logFile);
++    await logWork(`- Remaining queries: ${remainingQueries}`, logFile);
++    
++    
++}
++
++async function generateUUID() {
++    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
++        const r = (Math.random() * 16) | 0;
++        const v = c === 'x' ? r : (r & 0x3) | 0x8;
++        return v.toString(16);
++    });
++}
++exports.generateUUID = generateUUID;
++
++
++
++exports.logWork = logWork;
+diff --git a/node_modules/openalex-sdk/src/utils/helpers.ts b/node_modules/openalex-sdk/src/utils/helpers.ts
+index bbd90eb..befe639 100644
+--- a/node_modules/openalex-sdk/src/utils/helpers.ts
++++ b/node_modules/openalex-sdk/src/utils/helpers.ts
+@@ -9,6 +9,7 @@ import { GroupByInstitution } from '../types/institution';
+ import { InstitutionFilterParameters } from '../types/institutionFilterParameters';
+ import { GET } from './http';
+ 
++
+ /**
+  * The function `buildUrl` builds the URL based on the search parameters.
+  * @param {string} baseUrl - The `baseUrl` parameter is a string that represents the base URL.

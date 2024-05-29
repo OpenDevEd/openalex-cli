@@ -9,7 +9,7 @@ export function createMeta(args: any) {
     query: args.search,
     searchTerm: args.searchTerm || 'title',
     totalResults: args.count,
-    source: 'OenAlex',
+    source: 'OpenAlex',
     sourceFormat: args.chunkSize ? 'chunk' : 'original',
     date: new Date().toISOString(),
     searchField: args.searchField || 'title',
