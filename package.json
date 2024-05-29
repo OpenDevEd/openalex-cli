@@ -11,7 +11,8 @@
     "setup": "npm install && npm run build && npm link && openalex-cli --help",
     "lint": " eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "pretty": "prettier --write ."
+    "pretty": "prettier --write .",
+    "postinstall": "patch-package"
   },
   "repository": {
     "type": "git",
