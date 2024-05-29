@@ -248,6 +248,7 @@ export async function searchWork(args: any) {
       console.log('Warning: --endPage is set, but --limit is also set. --endPage will be ignored.');
     }
     openalexOptions['endPage'] = (args.startPage? args.startPage : 1) + pagesNeeded;
+    console.log('Pages needed:', pagesNeeded);
   }
 
   if (args.autosave) {
